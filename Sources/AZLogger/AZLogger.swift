@@ -64,7 +64,7 @@ extension AZLogger {
     public static func azOsLog(
         _ message: @autoclosure () -> Any,
         level: AZLogLevel = .debug,
-        category: String = "Default",
+        category: String = "debug",
         function: String = #function,
         file: String = #file,
         line: Int = #line
