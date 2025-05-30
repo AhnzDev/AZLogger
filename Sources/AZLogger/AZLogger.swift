@@ -6,17 +6,13 @@ import Foundation
 import OSLog
 
 public enum AZLogLevel {
-    case debug, info, warning, error, fault, `default`
+    case debug, error
     case request, response
 
     var osLogType: OSLogType {
         switch self {
         case .debug:     return .debug
-        case .info:      return .info
-        case .warning:   return .default
         case .error:     return .error
-        case .fault:     return .fault
-        case .default:   return .default
         case .request:   return .info
         case .response:  return .info
         }
@@ -24,12 +20,8 @@ public enum AZLogLevel {
 
     var symbol: String {
         switch self {
-        case .debug:     return ""
-        case .info:      return "ℹ️"
-        case .warning:   return "⚠️"
+        case .debug:     return "ℹ️"
         case .error:     return "❌"
-        case .fault:     return "🔥"
-        case .default:   return "📌"
         case .request:   return "✈️"  // outgoing
         case .response:  return "🛩️"  // incoming
         }
@@ -61,7 +53,7 @@ extension AZLogger {
         let filename = (file as NSString).lastPathComponent
         let typeName = filename.replacingOccurrences(of: ".swift", with: "")
         let evaluatedMessage = message()
-        let location = "\(typeName)→\(function):\(line)"
+        let location = "\(typeName) → \(function):\(line)"
         let text = "[\(level.symbol)] \(location) → \(evaluatedMessage)"
 #if DEBUG
         print(text)
@@ -86,11 +78,7 @@ extension AZLogger {
         
         switch level {
         case .debug:   logger.debug(  "\(text)")
-        case .info:    logger.info(   "\(text)")
-        case .warning: logger.log(    "\(text)")
         case .error:   logger.error(  "\(text)")
-        case .fault:   logger.fault(  "\(text)")
-        case .default: logger.log(    "\(text)")
         case .request: logger.info(    "\(text)")
         case .response: logger.info(    "\(text)")
         }
